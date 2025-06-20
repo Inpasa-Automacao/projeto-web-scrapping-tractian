@@ -57,9 +57,7 @@ def handleMap(handle):
         time.sleep(2)
 
     handle.click(By.XPATH, "//div[contains(@class, 'ag-checkbox-input-wrapper')]//input[@type='checkbox']")
-    time.sleep(10)
     handle.click(By.XPATH, "//div[contains(@class, 'ant-tabs-tab')]//button[span[text()='Baixar dados']]")
-    time.sleep(10)
     handle.click(By.XPATH, "//div[contains(@class, 'ant-modal-footer')]//button[span[text()='Baixar dados']]")
 
     logger.success("✅ Todos os dados baixados com sucesso.")

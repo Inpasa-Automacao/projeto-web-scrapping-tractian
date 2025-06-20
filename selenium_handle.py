@@ -23,8 +23,6 @@ class SeleniumHandle:
         options.add_argument("--headless=new")  # usa o headless novo
         options.add_argument("--start-maximized")  # meio inútil em headless, mas põe por segurança
         options.add_argument("window-size=1920,1080")  # ESSENCIAL: viewport real simulando fullscreen
-        options.add_argument("--disable-gpu")  # recomendado em alguns sistemas
-        options.add_argument("--no-sandbox")  # se estiver rodando em container
         options.add_argument(f"--user-data-dir={USER_DATA_DIR}")
         options.add_argument(f"--profile-directory={PROFILE_DIRECTORY}")
         options.add_experimental_option("prefs", {
