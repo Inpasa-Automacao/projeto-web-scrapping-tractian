@@ -1,5 +1,4 @@
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
@@ -10,10 +9,8 @@ from selenium.common.exceptions import (
     ElementClickInterceptedException,
     ElementNotInteractableException
 )
-from webdriver_manager.chrome import ChromeDriverManager
 from loguru import logger
 import time
-import os
 
 from config import USER_DATA_DIR, PROFILE_DIRECTORY, DOWNLOAD_PATH, URL
 
@@ -23,6 +20,11 @@ class SeleniumHandle:
 
     def setup_driver(self):
         options = Options()
+        options.add_argument("--headless=new")  # usa o headless novo
+        options.add_argument("--start-maximized")  # meio inútil em headless, mas põe por segurança
+        options.add_argument("window-size=1920,1080")  # ESSENCIAL: viewport real simulando fullscreen
+        options.add_argument("--disable-gpu")  # recomendado em alguns sistemas
+        options.add_argument("--no-sandbox")  # se estiver rodando em container
         options.add_argument(f"--user-data-dir={USER_DATA_DIR}")
         options.add_argument(f"--profile-directory={PROFILE_DIRECTORY}")
         options.add_experimental_option("prefs", {
@@ -31,8 +33,10 @@ class SeleniumHandle:
             "download.directory_upgrade": True,
             "safebrowsing.enabled": True
         })
+        CHROME_DRIVER_PATH = "C:\\Users\\automacao.dados\\.wdm\\drivers\\chromedriver\\win64\\137.0.7151.119\\chromedriver-win32\\chromedriver.exe"
+        service = Service(executable_path=CHROME_DRIVER_PATH)
         self.driver = webdriver.Chrome(
-            service=Service(ChromeDriverManager().install()),
+            service=service,
             options=options
         )
         logger.success("🚀 Driver iniciado com sucesso.")

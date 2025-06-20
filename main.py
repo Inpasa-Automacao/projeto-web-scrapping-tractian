@@ -5,22 +5,19 @@ from selenium.webdriver.common.by import By
 import time
 import shutil
 
-from config import DOWNLOAD_PATH
+from config import PATH_GOOGLE_DRIVE, DOWNLOAD_PATH
 
 CURRENT_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 logger.add(CURRENT_DIRECTORY + "/logs/logs_info.log", level="INFO", rotation="10 MB", filter=lambda record: record["level"].name == "INFO")
 logger.add(CURRENT_DIRECTORY + "/logs/logs_info.log", level="ERROR", rotation="10 MB", filter=lambda record: record["level"].name == "ERROR")
 
-def rename_csv_para_pasta_final(pasta_download):
+def rename_csv_para_pasta_final(pasta_download, path_google):
     nomes_finais = {
         "apontamentos": "apontamentos.csv",
         "atividades": "atividades.csv",
         "ordem de serviço": "ordem de serviço.csv",
         "solicitações": "solicitações.csv"
     }
-
-    pasta_final = os.path.join(pasta_download, "final")
-    os.makedirs(pasta_final, exist_ok=True)
 
     arquivos = [f for f in os.listdir(pasta_download) if f.endswith(".csv")]
     resultados = {}
@@ -34,7 +31,7 @@ def rename_csv_para_pasta_final(pasta_download):
 
         for i, arquivo in enumerate(candidatos):
             origem = os.path.join(pasta_download, arquivo)
-            destino = os.path.join(pasta_final, nome_final if i == 0 else f"{nome_final.replace('.csv', '')}_extra_{i}.csv")
+            destino = os.path.join(path_google, nome_final if i == 0 else f"{nome_final.replace('.csv', '')}_extra_{i}.csv")
 
             try:
                 shutil.move(origem, destino)
@@ -55,13 +52,16 @@ def handleMap(handle):
         handle.click(By.XPATH, "//div[contains(@class, 'ag-checkbox-input-wrapper')]//input[@type='checkbox']")
         logger.info("➡️ Indo para próxima página...")
         handle.click(By.XPATH, "//*[@title='Next Page']//button")
-        time.sleep(5)
-        tem_proxima_pagina = handle.is_element_clickable(By.XPATH, "//*[@title='Next Page']//button")
         time.sleep(3)
-        
+        tem_proxima_pagina = handle.is_element_clickable(By.XPATH, "//*[@title='Next Page']//button")
+        time.sleep(2)
+
     handle.click(By.XPATH, "//div[contains(@class, 'ag-checkbox-input-wrapper')]//input[@type='checkbox']")
-    handle.click(By.XPATH, "//button[span[text()='Baixar dados']]")
+    time.sleep(10)
+    handle.click(By.XPATH, "//div[contains(@class, 'ant-tabs-tab')]//button[span[text()='Baixar dados']]")
+    time.sleep(10)
     handle.click(By.XPATH, "//div[contains(@class, 'ant-modal-footer')]//button[span[text()='Baixar dados']]")
+
     logger.success("✅ Todos os dados baixados com sucesso.")
 
 def main():
@@ -69,13 +69,13 @@ def main():
     
     handle = SeleniumHandle()
     handle.setup_driver()
-    
+
     logger.info(f"Iniciando coleta de Ordem de Serviço")
     
     handle.acessar("workorders?v=table&table=workOrders")
     
-    handleMap(handle)
-    
+    handleMap(handle)  
+
     logger.info(f"Iniciando coleta de Atividades")
     
     handle.acessar("workorders?v=table&table=activities&page=1&limit=500")
@@ -96,7 +96,7 @@ def main():
     
     time.sleep(5)
     
-    rename_csv_para_pasta_final(DOWNLOAD_PATH)
+    rename_csv_para_pasta_final(DOWNLOAD_PATH, PATH_GOOGLE_DRIVE)
 
 if __name__ == "__main__":
     main()

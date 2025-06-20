@@ -1,7 +1,8 @@
 # Configurações do Selenium e paths
-USER_DATA_DIR = "C:\\Users\\renato.shishido\\Documents\\Selenium\\Default"
+USER_DATA_DIR = "C:\\Users\\Public\\Documents\\Default"
 PROFILE_DIRECTORY = "Default"
-DOWNLOAD_PATH = "C:\\Users\\renato.shishido\\OneDrive - Inpasa Agroindustrial SA\\Documentos\\Projetos\\Disparadores\\projeto-web-scrapping-tractian\\saida"
+DOWNLOAD_PATH = "C:\\Users\\Public\\Documents\\Codigos\\projeto-web-scrapping-tractian\\saida"
+PATH_GOOGLE_DRIVE = "G:\\.shortcut-targets-by-id\\1UrTuX6g75dJvc6284GRk8Ui6_w4n_Opo\\ARQ_PBI_AUT"
 
 # Configurações do WhatsApp Web
 URL = "https://app-v3.tractian.com/"
