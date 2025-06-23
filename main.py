@@ -57,7 +57,9 @@ def handleMap(handle):
         time.sleep(2)
 
     handle.click(By.XPATH, "//div[contains(@class, 'ag-checkbox-input-wrapper')]//input[@type='checkbox']")
+    time.sleep(3)
     handle.click(By.XPATH, "//div[contains(@class, 'ant-tabs-tab')]//button[span[text()='Baixar dados']]")
+    time.sleep(3)
     handle.click(By.XPATH, "//div[contains(@class, 'ant-modal-footer')]//button[span[text()='Baixar dados']]")
 
     logger.success("✅ Todos os dados baixados com sucesso.")
@@ -91,8 +93,14 @@ def main():
     handle.acessar("requests?v=table")
     
     handleMap(handle)
-    
+
+    logger.info(f"Fechando Driver Apos execucao")
+
     time.sleep(5)
+    
+    handle.fechar()
+
+    logger.info(f"Enviando arquivos para o Google Drive")
     
     rename_csv_para_pasta_final(DOWNLOAD_PATH, PATH_GOOGLE_DRIVE)
 

@@ -86,3 +86,11 @@ class SeleniumHandle:
         except Exception as e:
             logger.warning(f"⚠️ Elemento não disponível ou não encontrado: {e}")
             return False
+    
+    def fechar(self):
+        try:
+            if self.driver:
+                self.driver.quit()
+        except Exception as e:
+            logger.warning(f"⚠️ Falhou ao tentar fechar o browser: {e}")
+            return False
